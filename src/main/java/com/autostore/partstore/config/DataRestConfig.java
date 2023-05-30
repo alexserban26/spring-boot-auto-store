@@ -1,9 +1,11 @@
 package com.autostore.partstore.config;
 
+import com.autostore.partstore.entity.Order;
 import com.autostore.partstore.entity.Product;
 import com.autostore.partstore.entity.ProductCategory;
 import com.autostore.partstore.entity.ProductProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -19,6 +21,9 @@ import java.util.Set;
 
 @Configuration
 public class DataRestConfig implements RepositoryRestConfigurer {
+
+    @Value("${allowed.origins}")
+    private String[] allowedOrigins;
 
     private EntityManager entityManager;
 
@@ -48,7 +53,15 @@ public class DataRestConfig implements RepositoryRestConfigurer {
                 .withItemExposure(((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions)))
                 .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions));
 
+        config.getExposureConfiguration()
+                .forDomainType(Order.class)
+                .withItemExposure(((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions)))
+                .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions));
+
+
         exposeIds(config);
+
+//        cors.addMapping(config.getBasePath().getPath() + "**").allowedOrigins("http://localhost:4200");
     }
 
     private void exposeIds(RepositoryRestConfiguration config) {

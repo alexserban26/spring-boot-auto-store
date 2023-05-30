@@ -1,6 +1,7 @@
 package com.autostore.partstore.dao;
 
-import com.autostore.partstore.entity.Product;
+import com.autostore.partstore.entity.Customer;
+import com.autostore.partstore.entity.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,10 +11,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin("http://localhost:4200")
 @RepositoryRestResource
-public interface ProductRepository extends JpaRepository<Product, Long> {
-
-    Page<Product> findByCategoryId(@Param("id") Long id, Pageable pageable);
-    
-    Page<Product> findByNameContaining(@Param("name") String name, Pageable pageable);
-
+public interface OrderRepository extends JpaRepository<Order, Long> {
+    Page<Order> findByCustomerEmailOrderByDateCreatedDesc(@Param("email") String email, Pageable pageable);
 }
