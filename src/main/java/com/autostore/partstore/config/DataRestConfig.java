@@ -61,7 +61,7 @@ public class DataRestConfig implements RepositoryRestConfigurer {
 
         exposeIds(config);
 
-//        cors.addMapping(config.getBasePath().getPath() + "**").allowedOrigins("http://localhost:4200");
+        cors.addMapping("/api/**").allowedOrigins("https://localhost:4200");
     }
 
     private void exposeIds(RepositoryRestConfiguration config) {
